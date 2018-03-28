@@ -280,7 +280,7 @@ class BaseValidator implements PDFAValidator {
 
 	private boolean firstProcessObjectWithRule(Object checkObject, String checkContext, Rule rule) {
 		Boolean deferred = rule.getDeferred();
-		if (deferred != null && deferred) {
+		if (deferred != null && deferred.booleanValue()) {
 			List<ObjectWithContext> list = this.deferredRules.get(rule);
 			if (list == null) {
 				list = new ArrayList<>();
@@ -288,9 +288,8 @@ class BaseValidator implements PDFAValidator {
 			}
 			list.add(new ObjectWithContext(checkObject, checkContext));
 			return true;
-		} else {
-			return checkObjWithRule(checkObject, checkContext, rule);
 		}
+		return checkObjWithRule(checkObject, checkContext, rule);
 	}
 
 	private boolean checkObjWithRule(Object obj, String cntxtForRule, Rule rule) {
@@ -301,8 +300,8 @@ class BaseValidator implements PDFAValidator {
 		return testEvalResult;
 	}
 
-	protected void processAssertionResult(final boolean assertionResult, final String locationContext,
-			final Rule rule) {
+	protected void processAssertionResult(final boolean assertionResult,
+			final String locationContext, final Rule rule) {
 		if (!this.abortProcessing) {
 			this.testCounter++;
 			Location location = ValidationResults.locationFromValues(this.rootType, locationContext);
